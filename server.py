@@ -38,7 +38,7 @@ def get_transactions(acc_id, token, since=None, before=None, category=None, t_ra
     if category:
         filter_transactions = []
         for t in transactions:
-            if t['category'] == category:
+            if t['category'] == category and t['amount'] != 0:
                 filter_transactions.append(t)
         results = filter_transactions
     else:
@@ -55,7 +55,7 @@ def expenses(indices):
     # Adjust start_index as expenses are indexed starting from 1, NOT 0 !
     start_index = int(indices.split('-')[0])-1
     end_index  = int(indices.split('-')[1])
-    transactions_data = get_transactions(ACC_ID, TOKEN, START_DATE, END_DATE, category='holidays', t_range=[start_index, end_index])
+    transactions_data = get_transactions(ACC_ID, TOKEN, START_DATE, END_DATE, category='expenses', t_range=[start_index, end_index])
     transactions = transactions_data['requested_transactions']
     receipt_no = start_index+1
     if not os.path.exists('./receipts'):
